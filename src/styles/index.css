@@ -9,8 +9,17 @@
 .my-shadow {
     box-shadow: 0 0 4px 2px rgba(73, 73, 73, 0.658)
 }
-/* 
 
+.my-custom-shadow:focus {
+    box-shadow: 0 0 4px 2px rgba(73, 73, 73, 0.658)
+}
+
+.form-control:focus {
+    box-shadow: inset 0 0 4px 2px rgba(73, 73, 73, 0.658);
+    border: 0;
+}
+
+/* 
     You can write your own styles here...
     
     
