@@ -1,4 +1,14 @@
+.num-count {
+    height: '130px';
+    width: '130px';
+    color: white;
+    text-decoration: solid;
+    font-size: 140px;
+}
 
+.my-shadow {
+    box-shadow: 0 0 4px 2px rgba(73, 73, 73, 0.658)
+}
 /* 
 
     You can write your own styles here...
