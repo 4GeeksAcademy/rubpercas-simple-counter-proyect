@@ -5,56 +5,86 @@ import { faClock, faPlay, faStop, faClockRotateLeft, faBackwardStep, faCircleExc
 
 
 const SecondCounter = () => {
-    const [units, setUnits] = useState(0);
-    const [dozens, setDozens] = useState(0);
-    const [hundreds, setHundreds] = useState(0);
-    const [thousands, setThousands] = useState(0);
-    const [tenThousands, setTenThousands] = useState(0);
-    const [hundredThousands, setHundredThousands] = useState(0);
+    const [digits, setDigits] = useState([0, 0, 0, 0, 0, 0]);
+
+    const resetCounter = () => {
+        setDigits([0, 0, 0, 0, 0, 0]);
+      };
+      
+    const incrementDigits = (index) => {
+        if (index < 0) {
+            return;
+        }
+
+        setDigits((prevDigits) => {
+            const newDigits = [...prevDigits];
+            newDigits[index] = (newDigits[index] + 1) % 10;
+            if (newDigits[index] === 0) {
+                incrementDigits(index - 1);
+            }
+            return newDigits;
+        });
+    };
 
     useEffect(() => {
-        const counterInterval = setInterval(() => {
-            setUnits(prevUnits => {
-                if (prevUnits === 9) {
-                    setUnits(0);
-                    setDozens(prevDozens => {
-                        if (prevDozens === 9) {
-                            setDozens(0);
-                            setHundreds(prevHundreds => {
-                                if (prevHundreds === 9) {
-                                    setHundreds(0);
-                                    setThousands(prevThousands => {
-                                        if (prevThousands === 9) {
-                                            setThousands(0);
-                                            setTenThousands(prevTenThousands => {
-                                                if (prevTenThousands === 9) {
-                                                    setTenThousands(0);
-                                                    setHundredThousands(prevHundredThousand => prevHundredThousand + 1);
-                                                } else {
-                                                    return prevTenThousands + 1;
-                                                }
-                                            });
-                                        } else {
-                                            return prevThousands + 1;
-                                        }
-                                    });
-                                } else {
-                                    return prevHundreds + 1;
-                                }
-                            });
-                        } else {
-                            return prevDozens + 1;
-                        }
-                    });
-                } else {
-                    return prevUnits + 1;
-                }
-            });
-
+        const intervalId = setInterval(() => {
+            incrementDigits(digits.length - 1)
         }, 1000);
 
-        return () => clearInterval(counterInterval);
+        return () => clearInterval(intervalId);
     }, []);
+
+    // const SecondCounter = () => {
+    //     const [units, setUnits] = useState(0);
+    //     const [dozens, setDozens] = useState(0);
+    //     const [hundreds, setHundreds] = useState(0);
+    //     const [thousands, setThousands] = useState(0);
+    //     const [tenThousands, setTenThousands] = useState(0);
+    //     const [hundredThousands, setHundredThousands] = useState(0);
+
+    //     useEffect(() => {
+    //         const counterInterval = setInterval(() => {
+    //             setUnits(prevUnits => {
+    //                 if (prevUnits === 9) {
+    //                     setUnits(0);
+    //                     setDozens(prevDozens => {
+    //                         if (prevDozens === 9) {
+    //                             setDozens(0);
+    //                             setHundreds(prevHundreds => {
+    //                                 if (prevHundreds === 9) {
+    //                                     setHundreds(0);
+    //                                     setThousands(prevThousands => {
+    //                                         if (prevThousands === 9) {
+    //                                             setThousands(0);
+    //                                             setTenThousands(prevTenThousands => {
+    //                                                 if (prevTenThousands === 9) {
+    //                                                     setTenThousands(0);
+    //                                                     setHundredThousands(prevHundredThousand => prevHundredThousand + 1);
+    //                                                 } else {
+    //                                                     return prevTenThousands + 1;
+    //                                                 }
+    //                                             });
+    //                                         } else {
+    //                                             return prevThousands + 1;
+    //                                         }
+    //                                     });
+    //                                 } else {
+    //                                     return prevHundreds + 1;
+    //                                 }
+    //                             });
+    //                         } else {
+    //                             return prevDozens + 1;
+    //                         }
+    //                     });
+    //                 } else {
+    //                     return prevUnits + 1;
+    //                 }
+    //             });
+
+    //         }, 1000);
+
+    //         return () => clearInterval(counterInterval);
+    //     }, []);
 
     return (
         <div className="row">
@@ -63,22 +93,22 @@ const SecondCounter = () => {
                     <FontAwesomeIcon icon={faClock} spinPulse style={{ color: "#ffffff", height: '130px', width: '130px' }} />
                 </div>
                 <div className="bg-dark rounded bg-opacity-50 color-white d-flex align-items-center justify-content-center my-shadow" style={{ width: '120px', height: '180px' }}>
-                    <p className="num-count">{hundredThousands}</p>
+                    <p className="num-count">{digits[0]}</p>
                 </div>
                 <div className="bg-dark rounded bg-opacity-50 color-white d-flex align-items-center justify-content-center my-shadow" style={{ width: '120px', height: '180px' }}>
-                    <p className="num-count">{tenThousands}</p>
+                    <p className="num-count">{digits[1]}</p>
                 </div>
                 <div className="bg-dark rounded bg-opacity-50 color-white d-flex align-items-center justify-content-center my-shadow" style={{ width: '120px', height: '180px' }}>
-                    <p className="num-count">{thousands}</p>
+                    <p className="num-count">{digits[2]}</p>
                 </div>
                 <div className="bg-dark rounded bg-opacity-50 color-white d-flex align-items-center justify-content-center my-shadow" style={{ width: '120px', height: '180px' }}>
-                    <p className="num-count">{hundreds}</p>
+                    <p className="num-count">{digits[3]}</p>
                 </div>
                 <div className="bg-dark rounded bg-opacity-50 color-white d-flex align-items-center justify-content-center my-shadow" style={{ width: '120px', height: '180px' }}>
-                    <p className="num-count">{dozens}</p>
+                    <p className="num-count">{digits[4]}</p>
                 </div>
                 <div className="bg-dark rounded bg-opacity-50 color-white d-flex align-items-center justify-content-center my-shadow" style={{ width: '120px', height: '180px' }}>
-                    <p className="num-count">{units}</p>
+                    <p className="num-count">{digits[5]}</p>
                 </div>
             </div>
             <div className="row mt-1 d-flex align-items-center justify-content-center bg-black p-3">
@@ -95,11 +125,11 @@ const SecondCounter = () => {
                     </button>
                 </div>
                 <div className="d-flex gap-1 border rounded-1 p-2 my-shadow">
-                    <button type="button" class="btn btn-dark"><FontAwesomeIcon icon={faPlay} style={{ color: "#ffffff", }} />
+                    <button type="button" class="btn btn-dark" id="play"><FontAwesomeIcon icon={faPlay} style={{ color: "#ffffff", }} />
                     </button>
-                    <button type="button" class="btn btn-dark"><FontAwesomeIcon icon={faStop} style={{ color: "#ffffff", }} />
+                    <button type="button" class="btn btn-dark" id="pause"><FontAwesomeIcon icon={faStop} style={{ color: "#ffffff", }} />
                     </button>
-                    <button type="button" class="btn btn-dark"><FontAwesomeIcon icon={faBackwardStep} style={{ color: "#ffffff", }} /></button>
+                    <button type="button" class="btn btn-dark" id="restart" onClick={resetCounter}><FontAwesomeIcon icon={faBackwardStep} style={{ color: "#ffffff", }} /></button>
 
                 </div>
                 <div className="d-flex flex-column align-items-center justify-content-center border rounded-1 p-2 my-shadow">
