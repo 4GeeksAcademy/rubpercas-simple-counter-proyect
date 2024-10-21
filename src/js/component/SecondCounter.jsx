@@ -1,16 +1,17 @@
-import React from "react";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock, faPlay, faStop, faClockRotateLeft, faBackwardStep, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 
 
 const SecondCounter = () => {
     const [digits, setDigits] = useState([0, 0, 0, 0, 0, 0]);
+    const [isPaused, setIsPaused] = useState(false);
+
 
     const resetCounter = () => {
         setDigits([0, 0, 0, 0, 0, 0]);
-      };
-      
+    };
+
     const incrementDigits = (index) => {
         if (index < 0) {
             return;
@@ -26,65 +27,25 @@ const SecondCounter = () => {
         });
     };
 
+
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            incrementDigits(digits.length - 1)
-        }, 1000);
+        let intervalId;
+
+        const startInterval = () => {
+            intervalId = setInterval(() => {
+                incrementDigits(digits.length - 1)
+            }, 1000);
+        };
+
+        const stopInterval = () => {
+            clearInterval(intervalId);
+        };
+
+        !isPaused ? startInterval() : stopInterval();
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, [isPaused]);
 
-    // const SecondCounter = () => {
-    //     const [units, setUnits] = useState(0);
-    //     const [dozens, setDozens] = useState(0);
-    //     const [hundreds, setHundreds] = useState(0);
-    //     const [thousands, setThousands] = useState(0);
-    //     const [tenThousands, setTenThousands] = useState(0);
-    //     const [hundredThousands, setHundredThousands] = useState(0);
-
-    //     useEffect(() => {
-    //         const counterInterval = setInterval(() => {
-    //             setUnits(prevUnits => {
-    //                 if (prevUnits === 9) {
-    //                     setUnits(0);
-    //                     setDozens(prevDozens => {
-    //                         if (prevDozens === 9) {
-    //                             setDozens(0);
-    //                             setHundreds(prevHundreds => {
-    //                                 if (prevHundreds === 9) {
-    //                                     setHundreds(0);
-    //                                     setThousands(prevThousands => {
-    //                                         if (prevThousands === 9) {
-    //                                             setThousands(0);
-    //                                             setTenThousands(prevTenThousands => {
-    //                                                 if (prevTenThousands === 9) {
-    //                                                     setTenThousands(0);
-    //                                                     setHundredThousands(prevHundredThousand => prevHundredThousand + 1);
-    //                                                 } else {
-    //                                                     return prevTenThousands + 1;
-    //                                                 }
-    //                                             });
-    //                                         } else {
-    //                                             return prevThousands + 1;
-    //                                         }
-    //                                     });
-    //                                 } else {
-    //                                     return prevHundreds + 1;
-    //                                 }
-    //                             });
-    //                         } else {
-    //                             return prevDozens + 1;
-    //                         }
-    //                     });
-    //                 } else {
-    //                     return prevUnits + 1;
-    //                 }
-    //             });
-
-    //         }, 1000);
-
-    //         return () => clearInterval(counterInterval);
-    //     }, []);
 
     return (
         <div className="row">
@@ -117,25 +78,28 @@ const SecondCounter = () => {
             <div className="container-fluid d-flex align-items-center justify-content-center bg-black gap-3 p-3">
 
                 <div className="d-flex flex-column align-items-center justify-content-center border rounded-1 p-2 my-shadow">
-                    <div class="mb-1">
-                        <label for="exampleFormControlInput1" class="form-label text-white d-flex flex-column align-items-center justify-content-center">Count down</label>
-                        <input type="text" class="form-control my-custom-shadow" id="exampleFormControlInput1" placeholder="Tiempo (en segundos)" />
+                    <div className="mb-1">
+                        <label className="form-label text-white d-flex flex-column align-items-center justify-content-center">Count down</label>
+                        <input type="text" className="form-control my-custom-shadow" id="exampleFormControlInput1" placeholder="Tiempo (en segundos)" onChange={(e) => {
+                            let aux = setDigits(e.target.value);
+                            return Array.from(aux);
+                        }} />
                     </div>
                     <button type="button" className="btn btn-dark mt-1 w-100"><FontAwesomeIcon icon={faClockRotateLeft} style={{ color: "#ffffff", }} />
                     </button>
                 </div>
                 <div className="d-flex gap-1 border rounded-1 p-2 my-shadow">
-                    <button type="button" class="btn btn-dark" id="play"><FontAwesomeIcon icon={faPlay} style={{ color: "#ffffff", }} />
+                    <button type="button" className="btn btn-dark" id="play" onClick={() => setIsPaused(false)}><FontAwesomeIcon icon={faPlay} style={{ color: "#ffffff", }} />
                     </button>
-                    <button type="button" class="btn btn-dark" id="pause"><FontAwesomeIcon icon={faStop} style={{ color: "#ffffff", }} />
+                    <button type="button" className="btn btn-dark" id="pause" onClick={() => setIsPaused(true)}><FontAwesomeIcon icon={faStop} style={{ color: "#ffffff", }} />
                     </button>
-                    <button type="button" class="btn btn-dark" id="restart" onClick={resetCounter}><FontAwesomeIcon icon={faBackwardStep} style={{ color: "#ffffff", }} /></button>
+                    <button type="button" className="btn btn-dark" id="restart" onClick={resetCounter}><FontAwesomeIcon icon={faBackwardStep} style={{ color: "#ffffff", }} /></button>
 
                 </div>
                 <div className="d-flex flex-column align-items-center justify-content-center border rounded-1 p-2 my-shadow">
-                    <div class="mb-1">
-                        <label for="exampleFormControlInput1" class="form-label text-white d-flex flex-column align-items-center justify-content-center">Time for the alert</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Tiempo (en segundos)" />
+                    <div className="mb-1">
+                        <label className="form-label text-white d-flex flex-column align-items-center justify-content-center">Time for the alert</label>
+                        <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Tiempo (en segundos)" />
                     </div>
                     <button type="button" className="btn btn-dark mt-1 w-100"><FontAwesomeIcon icon={faCircleExclamation} style={{ color: "#ffffff", }} />
                     </button>
@@ -147,3 +111,71 @@ const SecondCounter = () => {
 };
 
 export default SecondCounter;
+
+
+// codigo de Juan David:
+
+// import './App.css'
+// import { useState, useEffect } from 'react'
+
+
+// function App() {
+//   const [counter, setCounter] = useState(0);
+//   const [idInteval, setIdInterval] = useState("");
+
+//   useEffect(() => {
+//     const id = setInterval(() => {
+//       setCounter(prevCounter => prevCounter + 1)
+//     }, 500)
+
+//     setIdInterval(id)
+//   }, [])
+
+//   const decreaseCounter = () => {
+//     if (idInteval) {
+//       return alert('Hay un intervalo ejecutandose')
+//     }
+//     const id = setInterval(() => {
+//       setCounter(prevCounter => {
+//         if (prevCounter == 0) {
+//           clearInterval(id)
+//           return 0
+//         }
+//         return prevCounter - 1
+//       })
+
+//     }, 500)
+//     setIdInterval(id)
+//   }
+
+//   const stopInterval = () => {
+//     clearInterval(idInteval);
+//     setIdInterval("")
+//   }
+
+//   return (
+//     <>
+//       <h1>{counter}</h1>
+//       <input
+//         type="text"
+//         disabled={idInteval ? true : false}
+//         onChange={(e) => {
+//          let aux = setCounter(e.target.value);
+//            return Array.from(aux);
+//            }}
+//         style={{
+//           display: "block",
+//           padding: "10px",
+//           marginBottom: "10px"
+//         }}
+//         placeholder='Ingresa una cantidad en segundos' />
+//       <button onClick={stopInterval}>Detener</button>
+//       <button onClick={decreaseCounter}>Iniciar</button>
+
+//     </>
+//   )
+
+
+// }
+
+// export default App
