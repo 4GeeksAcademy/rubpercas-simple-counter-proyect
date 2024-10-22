@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock, faPlay, faStop, faClockRotateLeft, faBackwardStep, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 
-
+// Función SecondCounter que renderiza el contador completo.
 const SecondCounter = () => {
-    const [digits, setDigits] = useState([0, 0, 0, 0, 0, 0]);
-    const [isPaused, setIsPaused] = useState(false);
+    const [digits, setDigits] = useState([0, 0, 0, 0, 0, 0]); //useState para la variable digits (nuestro array con los dígitos del contador inicializado a 0)
+    const [isPaused, setIsPaused] = useState(false); //useState para la variable isPaused para controlar los botones de play y pause.
+    const [allDigits, setAllDigits] = useState([]);
 
-
-    const resetCounter = () => {
+    const resetCounter = () => { // funcion que formatea el contador a 0 de nuevo para el boton restart.
         setDigits([0, 0, 0, 0, 0, 0]);
     };
 
-    const incrementDigits = (index) => {
+    const incrementDigits = (index) => { //función que controla el incremento de los digitos.
         if (index < 0) {
             return;
         }
@@ -26,6 +26,13 @@ const SecondCounter = () => {
             return newDigits;
         });
     };
+
+    const arrayAux = (e) => {        
+        const inputValue = e.target.value;
+        const digitsArray = inputValue.split('');
+        const digitsArrayAsNumbers = digitsArray.map(digit => Number(digit));
+        setDigits(digitsArrayAsNumbers);
+    }
 
 
     useEffect(() => {
@@ -79,13 +86,10 @@ const SecondCounter = () => {
 
                 <div className="d-flex flex-column align-items-center justify-content-center border rounded-1 p-2 my-shadow">
                     <div className="mb-1">
-                        <label className="form-label text-white d-flex flex-column align-items-center justify-content-center">Count down</label>
-                        <input type="text" className="form-control my-custom-shadow" id="exampleFormControlInput1" placeholder="Tiempo (en segundos)" onChange={(e) => {
-                            let aux = setDigits(e.target.value);
-                            return Array.from(aux);
-                        }} />
+                        <label className="form-label text-white d-flex flex-column align-items-center justify-content-center" htmlFor="count-down-input">Count down</label>
+                        <input type="number" className="form-control my-custom-shadow" id="count-down-input" placeholder="Tiempo (en segundos)" onChange={arrayAux} />
                     </div>
-                    <button type="button" className="btn btn-dark mt-1 w-100"><FontAwesomeIcon icon={faClockRotateLeft} style={{ color: "#ffffff", }} />
+                    <button type="button" className="btn btn-dark mt-1 w-100" id="count-down-button"><FontAwesomeIcon icon={faClockRotateLeft} style={{ color: "#ffffff", }} />
                     </button>
                 </div>
                 <div className="d-flex gap-1 border rounded-1 p-2 my-shadow">
@@ -98,8 +102,8 @@ const SecondCounter = () => {
                 </div>
                 <div className="d-flex flex-column align-items-center justify-content-center border rounded-1 p-2 my-shadow">
                     <div className="mb-1">
-                        <label className="form-label text-white d-flex flex-column align-items-center justify-content-center">Time for the alert</label>
-                        <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Tiempo (en segundos)" />
+                        <label className="form-label text-white d-flex flex-column align-items-center justify-content-center" htmlFor="alert-time-input">Time for the alert</label>
+                        <input type="number" className="form-control" id="alert-time-input" placeholder="Tiempo (en segundos)" />
                     </div>
                     <button type="button" className="btn btn-dark mt-1 w-100"><FontAwesomeIcon icon={faCircleExclamation} style={{ color: "#ffffff", }} />
                     </button>
