@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faStop, faBackwardStep } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faPause, faBackwardStep } from '@fortawesome/free-solid-svg-icons'
 
 const Buttons = ({ handleReset, handleStop, handleResume }) => {
     return (
@@ -21,7 +21,7 @@ const Buttons = ({ handleReset, handleStop, handleResume }) => {
                     className="btn btn-secondary mb-2 me-2 border border-light"
                     onClick={handleStop}
                 >
-                    <FontAwesomeIcon icon={faStop} style={{ color: "#ffffff", }} />
+                    <FontAwesomeIcon icon={faPause} style={{ color: "#ffffff", }} />
                 </button>
                 <button
                     id="btn-resume"
